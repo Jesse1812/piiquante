@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
@@ -10,7 +13,13 @@ const app = express();
 
 mongoose
   .connect(
-    'mongodb+srv://Jesse1812:Varader0@cluster0.ooqgv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+    'mongodb+srv://' +
+      process.env.DB_USER +
+      ':' +
+      process.env.DB_PASSWORD +
+      '@cluster0.ooqgv.mongodb.net/' +
+      process.env.DB_NAME +
+      '?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log('Connexion à MongoDB réussie !'))
