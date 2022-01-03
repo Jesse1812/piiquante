@@ -99,7 +99,7 @@ exports.deleteSauce = (req, res, next) => {
 };
 
 // Donner son avis sur une sauce (like / Dislike)
-exports.likeOrDislike = (req, res, next) => {
+exports.likeSauce = (req, res, next) => {
   if (req.body.like === 1) {
     Sauce.updateOne(
       { _id: req.params.id },
