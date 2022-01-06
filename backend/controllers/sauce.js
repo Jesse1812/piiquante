@@ -2,20 +2,36 @@ const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 // Création d'une sauce
-exports.createSauce = (req, res, next) => {
-  delete req.body.userId;
+exports.createSauce = async (req, res, next) => {
+  // delete req.body.userId;
+  const input = JSON.parse(req.body.sauce);
+  const imageUrl =
+    req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
   const sauce = new Sauce({
-    ...req.body,
-    likes: 0,
-    dislikes: 0,
-    usersLiked: [],
-    usersDisliked: [],
+    ...input,
+    imageUrl,
+    // likes: 0,
+    // dislikes: 0,
+    // usersLiked: '',
+    // usersDisliked: '',
   });
+  console.log('salut', input);
   sauce
     .save()
     .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
     .catch((error) => res.status(400).json({ error }));
 };
+
+// Autre façon de créer la sauce
+// const input = JSON.parse(req.body.sauce);
+// const imageUrl =
+//   req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+// try {
+//   await Sauce.create({ ...input });
+//   res.status(201).json({ message: 'Sauce enregistrée !' });
+// } catch (error) {
+//   res.status(400).json({ error });
+// }
 
 // Affichage de la liste des sauces
 exports.getAllSauces = (req, res, next) => {
