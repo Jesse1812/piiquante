@@ -10,12 +10,7 @@ exports.createSauce = async (req, res, next) => {
   const sauce = new Sauce({
     ...input,
     imageUrl,
-    // likes: 0,
-    // dislikes: 0,
-    // usersLiked: '',
-    // usersDisliked: '',
   });
-  console.log('salut', input);
   sauce
     .save()
     .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
@@ -46,6 +41,7 @@ exports.getOneSauce = (req, res, next) => {
     _id: req.params.id,
   })
     .then((sauce) => {
+      console.log(sauce);
       res.status(200).json(sauce);
     })
     .catch((error) => {
@@ -57,20 +53,22 @@ exports.getOneSauce = (req, res, next) => {
 
 // Mise à jour d'une sauce selon son id
 exports.modifySauce = (req, res, next) => {
-  const sauce = new Sauce({
-    _id: req.params.id,
-    name: req.body.name,
-    manufacturer: req.body.manufacturer,
-    description: req.body.description,
-    mainPepper: req.body.mainPepper,
-    imageUrl: req.body.imageUrl,
-    heat: req.body.heat,
-    likes: req.body.likes,
-    dislikes: req.body.dislikes,
-    usersLiked: req.body.usersLiked,
-    usersDisliked: req.body.usersDisliked,
-    userId: req.params.userId,
-  });
+  let sauce;
+  if (req.file) {
+    const imageUrl =
+      req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+    sauce = new Sauce({
+      ...req.body,
+      imageUrl,
+      _id: req.params.id,
+    });
+  } else {
+    sauce = new Sauce({
+      ...req.body,
+      _id: req.params.id,
+    });
+  }
+
   Sauce.updateOne({ _id: req.params.id }, sauce)
     .then(() => {
       res.status(201).json({
