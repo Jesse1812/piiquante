@@ -41,7 +41,6 @@ exports.getOneSauce = (req, res, next) => {
     _id: req.params.id,
   })
     .then((sauce) => {
-      console.log(sauce);
       res.status(200).json(sauce);
     })
     .catch((error) => {
@@ -68,7 +67,6 @@ exports.modifySauce = (req, res, next) => {
       _id: req.params.id,
     });
   }
-
   Sauce.updateOne({ _id: req.params.id }, sauce)
     .then(() => {
       res.status(201).json({
