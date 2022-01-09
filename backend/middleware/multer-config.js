@@ -7,10 +7,11 @@ const MIME_TYPES = {
   'image/png': 'png',
 };
 
-const dir = '../images';
+//Création fichier image si vide (pour github)
+const dir = './images';
+
 if (!fs.existsSync(dir)) {
-  // CREATE DIRECTORY IF NOT FOUND
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir);
 }
 
 const storage = multer.diskStorage({

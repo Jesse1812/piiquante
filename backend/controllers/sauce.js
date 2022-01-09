@@ -1,15 +1,17 @@
 const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
+const getImageUrl = (req) =>
+  req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+
 // Création d'une sauce
 exports.createSauce = async (req, res, next) => {
-  // delete req.body.userId;
+  // console.log(req.body.sauce);
   const input = JSON.parse(req.body.sauce);
-  const imageUrl =
-    req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
+  // console.log(input);
   const sauce = new Sauce({
     ...input,
-    imageUrl,
+    imageUrl: getImageUrl(req),
   });
   sauce
     .save()
@@ -54,11 +56,9 @@ exports.getOneSauce = (req, res, next) => {
 exports.modifySauce = (req, res, next) => {
   let sauce;
   if (req.file) {
-    const imageUrl =
-      req.protocol + '://' + req.get('host') + '/images/' + req.file.filename;
     sauce = new Sauce({
       ...req.body,
-      imageUrl,
+      imageUrl: getImageUrl(req),
       _id: req.params.id,
     });
   } else {
