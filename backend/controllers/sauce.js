@@ -6,9 +6,7 @@ const getImageUrl = (req) =>
 
 // Création d'une sauce
 exports.createSauce = async (req, res, next) => {
-  // console.log(req.body.sauce);
   const input = JSON.parse(req.body.sauce);
-  // console.log(input);
   const sauce = new Sauce({
     ...input,
     imageUrl: getImageUrl(req),
